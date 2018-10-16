@@ -1,4 +1,4 @@
-http://10.239.255.100:4000/login
+https://10.239.255.100:4000/login
 
 kastuajanimi: xtee
 parool: xtee123
