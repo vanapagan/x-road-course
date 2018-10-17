@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xhtml:html xmlns:xhtml="http://www.w3.org/1999/xhtml"
+            xmlns:xforms="http://www.w3.org/2002/xforms"
+            xmlns:xxforms="http://orbeon.org/oxf/xml/xforms"
+            xmlns:events="http://www.w3.org/2001/xml-events"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+            xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+            xmlns:xtee="http://x-tee.riik.ee/xsd/xtee.xsd"
+            xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
+            xmlns:iden="http://x-road.eu/xsd/identifiers"
+            xmlns:tns="http://trainings.ttu.ee">
+   <xhtml:head>
+      <xhtml:title xml:lang="et">TTU kursuste nimekiri</xhtml:title>
+      <xhtml:title xml:lang="en">TTU Courses list</xhtml:title>
+      <xforms:model>
+         <xforms:instance id="CoursesList.input">
+            <SOAP-ENV:Envelope>
+               <SOAP-ENV:Header>
+                  <xrd:protocolVersion>4.0</xrd:protocolVersion>
+                  <xrd:id/>
+                  <xrd:userId>EE</xrd:userId>
+                  <xrd:issue/>
+                  <xrd:service iden:objectType="SERVICE">
+                     <iden:xRoadInstance>ee-dev</iden:xRoadInstance>
+                     <iden:memberClass>COM</iden:memberClass>
+                     <iden:memberCode>11333578</iden:memberCode>
+                     <iden:subsystemCode>DEVTRAINING_09_A</iden:subsystemCode>
+                     <iden:serviceCode>CoursesList</iden:serviceCode>
+                     <iden:serviceVersion>v1</iden:serviceVersion>
+                  </xrd:service>
+                  <xrd:client iden:objectType="SUBSYSTEM">
+                     <iden:xRoadInstance>ee-dev</iden:xRoadInstance>
+                     <iden:memberClass/>
+                     <iden:memberCode/>
+                     <iden:subsystemCode/>
+                  </xrd:client>
+               </SOAP-ENV:Header>
+               <SOAP-ENV:Body>
+                  <ns5:CoursesList xmlns:ns5="http://trainings.ttu.ee">
+                     <Name/>
+                     <Date/>
+                  </ns5:CoursesList>
+               </SOAP-ENV:Body>
+            </SOAP-ENV:Envelope>
+         </xforms:instance>
+         <xforms:instance id="CoursesList.output">
+            <dummy/>
+         </xforms:instance>
+         <xforms:bind nodeset="instance('CoursesList.input')/SOAP-ENV:Body">
+            <xforms:bind nodeset="tns:CoursesList">
+               <xforms:bind nodeset="Name" type="xforms:string"/>
+               <xforms:bind nodeset="Date" type="xforms:date"/>
+            </xforms:bind>
+         </xforms:bind>
+         <xforms:bind nodeset="instance('CoursesList.output')/SOAP-ENV:Body">
+            <xforms:bind nodeset="tns:CoursesListResponse">
+               <xforms:bind nodeset="Courses">
+                  <xforms:bind nodeset="CourseShort">
+                     <xforms:bind nodeset="Id" type="xforms:string"/>
+                     <xforms:bind nodeset="Name" type="xforms:string"/>
+                  </xforms:bind>
+               </xforms:bind>
+            </xforms:bind>
+         </xforms:bind>
+         <xforms:submission id="CoursesList.submission"
+                            action="http://example.org/xroad-endpoint"
+                            mediatype="application/soap+xml; charset=UTF-8; action=http://trainings.ttu.ee/CoursesList"
+                            encoding="UTF-8"
+                            ref="instance('CoursesList.input')"
+                            method="post"
+                            replace="instance"
+                            instance="CoursesList.output">
+            <xforms:setvalue ref="instance('temp')/relevant"
+                             value="false()"
+                             events:event="xforms-submit"/>
+            <xforms:setvalue ref="instance('CoursesList.input')/SOAP-ENV:Header/*:id"
+                             value="digest(string(random()), 'SHA-1', 'hex')"
+                             events:event="xforms-submit"/>
+            <xforms:toggle case="CoursesList.response" events:event="xforms-submit-done"/>
+            <xforms:setvalue ref="instance('temp')/relevant"
+                             value="true()"
+                             events:event="xforms-submit-done"/>
+            <xforms:setvalue ref="instance('temp')/relevant"
+                             value="true()"
+                             events:event="xforms-submit-error"/>
+            <xforms:message level="modal" events:event="xforms-submit-error">
+               <xforms:output xml:lang="et"
+                              value="if (event('error-type') = 'submission-in-progress') then 'Üks päring juba käib!'        else if (event('error-type') = 'no-data') then 'Pole andmeid, mida saata!'        else if (event('error-type') = 'validation-error') then 'Valideerimise viga!'        else if (event('error-type') = 'parse-error') then 'Viga vastuse töötlemisel!'        else if (event('error-type') = 'resource-error') then 'Päringu vastus ei ole XML!'        else if (event('error-type') = 'target-error') then 'Sihtkoha viga!'        else 'Sisemine viga!'"/>
+               <xforms:output xml:lang="en"
+                              value="if (event('error-type') = 'submission-in-progress') then 'Submission already started!'        else if (event('error-type') = 'no-data') then 'No data to submit!'        else if (event('error-type') = 'validation-error') then 'Validation error!'        else if (event('error-type') = 'parse-error') then 'Error parsing response!'        else if (event('error-type') = 'resource-error') then 'Response is not XML!'        else if (event('error-type') = 'target-error') then 'Target error!'        else 'Internal error!'"/>
+            </xforms:message>
+         </xforms:submission>
+         <xforms:instance id="temp">
+            <temp>
+               <relevant xsi:type="boolean">true</relevant>
+            </temp>
+         </xforms:instance>
+         <xforms:dispatch targetid="CoursesList.request"
+                          name="xforms-select"
+                          events:event="xforms-ready"/>
+         <xforms:instance id="CourseDetails.input">
+            <SOAP-ENV:Envelope>
+               <SOAP-ENV:Header>
+                  <xrd:protocolVersion>4.0</xrd:protocolVersion>
+                  <xrd:id/>
+                  <xrd:userId>EE</xrd:userId>
+                  <xrd:issue/>
+                  <xrd:service iden:objectType="SERVICE">
+                     <iden:xRoadInstance>ee-dev</iden:xRoadInstance>
+                     <iden:memberClass>COM</iden:memberClass>
+                     <iden:memberCode>11333578</iden:memberCode>
+                     <iden:subsystemCode>DEVTRAINING_09_A</iden:subsystemCode>
+                     <iden:serviceCode>CourseDetails</iden:serviceCode>
+                     <iden:serviceVersion>v1</iden:serviceVersion>
+                  </xrd:service>
+                  <xrd:client iden:objectType="SUBSYSTEM">
+                     <iden:xRoadInstance>ee-dev</iden:xRoadInstance>
+                     <iden:memberClass/>
+                     <iden:memberCode/>
+                     <iden:subsystemCode/>
+                  </xrd:client>
+               </SOAP-ENV:Header>
+               <SOAP-ENV:Body>
+                  <ns5:CourseDetails xmlns:ns5="http://trainings.ttu.ee">
+                     <Id/>
+                  </ns5:CourseDetails>
+               </SOAP-ENV:Body>
+            </SOAP-ENV:Envelope>
+         </xforms:instance>
+         <xforms:instance id="CourseDetails.output">
+            <dummy/>
+         </xforms:instance>
+         <xforms:bind nodeset="instance('CourseDetails.input')/SOAP-ENV:Body">
+            <xforms:bind nodeset="tns:CourseDetails">
+               <xforms:bind nodeset="Id" type="xforms:int"/>
+            </xforms:bind>
+         </xforms:bind>
+         <xforms:bind nodeset="instance('CourseDetails.output')/SOAP-ENV:Body">
+            <xforms:bind nodeset="tns:CourseDetailsResponse">
+               <xforms:bind nodeset="Course">
+                  <xforms:bind nodeset="Id" type="xforms:string"/>
+                  <xforms:bind nodeset="Name" type="xforms:string"/>
+                  <xforms:bind nodeset="location" type="xforms:string"/>
+                  <xforms:bind nodeset="date" type="xforms:date"/>
+               </xforms:bind>
+            </xforms:bind>
+         </xforms:bind>
+         <xforms:submission id="CourseDetails.submission"
+                            action="http://example.org/xroad-endpoint"
+                            mediatype="application/soap+xml; charset=UTF-8; action=http://trainings.ttu.ee/CourseDetails"
+                            encoding="UTF-8"
+                            ref="instance('CourseDetails.input')"
+                            method="post"
+                            replace="instance"
+                            instance="CourseDetails.output">
+            <xforms:setvalue ref="instance('temp')/relevant"
+                             value="false()"
+                             events:event="xforms-submit"/>
+            <xforms:setvalue ref="instance('CourseDetails.input')/SOAP-ENV:Header/*:id"
+                             value="digest(string(random()), 'SHA-1', 'hex')"
+                             events:event="xforms-submit"/>
+            <xforms:toggle case="CourseDetails.response" events:event="xforms-submit-done"/>
+            <xforms:setvalue ref="instance('temp')/relevant"
+                             value="true()"
+                             events:event="xforms-submit-done"/>
+            <xforms:setvalue ref="instance('temp')/relevant"
+                             value="true()"
+                             events:event="xforms-submit-error"/>
+            <xforms:message level="modal" events:event="xforms-submit-error">
+               <xforms:output xml:lang="et"
+                              value="if (event('error-type') = 'submission-in-progress') then 'Üks päring juba käib!'        else if (event('error-type') = 'no-data') then 'Pole andmeid, mida saata!'        else if (event('error-type') = 'validation-error') then 'Valideerimise viga!'        else if (event('error-type') = 'parse-error') then 'Viga vastuse töötlemisel!'        else if (event('error-type') = 'resource-error') then 'Päringu vastus ei ole XML!'        else if (event('error-type') = 'target-error') then 'Sihtkoha viga!'        else 'Sisemine viga!'"/>
+               <xforms:output xml:lang="en"
+                              value="if (event('error-type') = 'submission-in-progress') then 'Submission already started!'        else if (event('error-type') = 'no-data') then 'No data to submit!'        else if (event('error-type') = 'validation-error') then 'Validation error!'        else if (event('error-type') = 'parse-error') then 'Error parsing response!'        else if (event('error-type') = 'resource-error') then 'Response is not XML!'        else if (event('error-type') = 'target-error') then 'Target error!'        else 'Internal error!'"/>
+            </xforms:message>
+         </xforms:submission>
+         <xforms:dispatch targetid="CourseDetails.request"
+                          name="xforms-select"
+                          events:event="xforms-ready"/>
+      </xforms:model>
+   </xhtml:head>
+   <xhtml:body>
+      <xhtml:h1 xml:lang="et">TTU kursuste nimekiri</xhtml:h1>
+      <xhtml:h1 xml:lang="en">TTU Courses list</xhtml:h1>
+      <xforms:switch>
+         <xforms:case id="CoursesList.request">
+            <xforms:group ref="instance('CoursesList.input')/SOAP-ENV:Body">
+               <xforms:group ref="tns:CoursesList">
+                  <xforms:input ref="Name">
+                     <xforms:label xml:lang="et">Kursuse nimi</xforms:label>
+                     <xforms:label xml:lang="en">Course name</xforms:label>
+                  </xforms:input>
+                  <xforms:input ref="Date">
+                     <xforms:label xml:lang="et">Kursuse aeg</xforms:label>
+                     <xforms:label xml:lang="en">Course date</xforms:label>
+                  </xforms:input>
+               </xforms:group>
+            </xforms:group>
+            <xforms:group class="actions">
+               <xforms:submit submission="CoursesList.submission">
+                  <xforms:label xml:lang="et">Esita päring</xforms:label>
+                  <xforms:label xml:lang="en">Submit</xforms:label>
+               </xforms:submit>
+            </xforms:group>
+         </xforms:case>
+         <xforms:case id="CoursesList.response">
+            <xforms:group ref="instance('CoursesList.output')/SOAP-ENV:Header" class="serviceid">
+               <xforms:output ref="xrd:id">
+                  <xforms:label xml:lang="et">Päringu id</xforms:label>
+                  <xforms:label xml:lang="en">Query id</xforms:label>
+               </xforms:output>
+            </xforms:group>
+            <xforms:group ref="instance('CoursesList.output')/SOAP-ENV:Body">
+               <xforms:group ref="tns:CoursesListResponse">
+                  <xforms:group ref="Courses">
+                     <xforms:repeat nodeset="CourseShort"
+                                    id="CoursesList_output_tns_CoursesListResponse_Courses_CourseShort">
+                        <xforms:output ref="Id">
+                           <xforms:label xml:lang="et">Kood</xforms:label>
+                        </xforms:output>
+                        <xforms:output ref="Name">
+                           <xforms:label xml:lang="et">Nimi</xforms:label>
+                        </xforms:output>
+
+                        <xforms:trigger appearance="minimal">
+                            <xforms:label xml:lang="et">Detailid</xforms:label>
+                            <xforms:label xml:lang="en">Details</xforms:label>
+                            <xforms:action events:event="DOMActivate">
+                                <xforms:setvalue ref="instance('CourseDetails.input')/SOAP-ENV:Body/tns:CourseDetails/Id"
+                                    value="context()/Id"/>
+                                <xforms:send submission="CourseDetails.submission"/>
+                            </xforms:action>
+                        </xforms:trigger>
+
+                     </xforms:repeat>
+                  </xforms:group>
+               </xforms:group>
+            </xforms:group>
+            <xforms:group ref="instance('CoursesList.output')/SOAP-ENV:Body/tns:CoursesListResponse[if (keha) then not(keha/*) else if (response) then not(response/*) else not(*)]"
+                          class="info">
+               <xhtml:span xml:lang="et">Andmeid ei tulnud.</xhtml:span>
+               <xhtml:span xml:lang="en">Service returned no data.</xhtml:span>
+            </xforms:group>
+            <xforms:group ref="instance('CoursesList.output')/SOAP-ENV:Body/SOAP-ENV:Fault"
+                          class="fault">
+               <xforms:output ref="faultstring"/>
+            </xforms:group>
+            <xforms:group class="actions">
+               <xforms:trigger>
+                  <xforms:label xml:lang="et">Uuesti</xforms:label>
+                  <xforms:label xml:lang="en">Again</xforms:label>
+                  <xforms:toggle events:event="DOMActivate" case="CoursesList.request"/>
+               </xforms:trigger>
+            </xforms:group>
+         </xforms:case>
+         <xforms:case id="CourseDetails.response">
+            <xforms:group ref="instance('CourseDetails.output')/SOAP-ENV:Header"
+                          class="serviceid">
+               <xforms:output ref="xrd:id">
+                  <xforms:label xml:lang="et">Päringu id</xforms:label>
+                  <xforms:label xml:lang="en">Query id</xforms:label>
+               </xforms:output>
+            </xforms:group>
+            <xforms:group ref="instance('CourseDetails.output')/SOAP-ENV:Body">
+               <xforms:group ref="tns:CourseDetailsResponse">
+                  <xforms:group ref="Course">
+                     <xforms:output ref="Id">
+                        <xforms:label xml:lang="et">Kood</xforms:label>
+                     </xforms:output>
+                     <xforms:output ref="Name">
+                        <xforms:label xml:lang="et">Nimi</xforms:label>
+                     </xforms:output>
+                     <xforms:output ref="location">
+                        <xforms:label xml:lang="et">Asukoht</xforms:label>
+                     </xforms:output>
+                     <xforms:output ref="date">
+                        <xforms:label xml:lang="et">Aeg</xforms:label>
+                     </xforms:output>
+                  </xforms:group>
+               </xforms:group>
+            </xforms:group>
+            <xforms:group ref="instance('CourseDetails.output')/SOAP-ENV:Body/tns:CourseDetailsResponse[if (keha) then not(keha/*) else if (response) then not(response/*) else not(*)]"
+                          class="info">
+               <xhtml:span xml:lang="et">Andmeid ei tulnud.</xhtml:span>
+               <xhtml:span xml:lang="en">Service returned no data.</xhtml:span>
+            </xforms:group>
+            <xforms:group ref="instance('CourseDetails.output')/SOAP-ENV:Body/SOAP-ENV:Fault"
+                          class="fault">
+               <xforms:output ref="faultstring"/>
+            </xforms:group>
+            <xforms:group class="actions">
+               <xforms:trigger>
+                  <xforms:label xml:lang="et">Uuesti</xforms:label>
+                  <xforms:label xml:lang="en">Again</xforms:label>
+                  <xforms:toggle events:event="DOMActivate" case="CoursesList.request"/>
+               </xforms:trigger>
+            </xforms:group>
+         </xforms:case>
+      </xforms:switch>
+   </xhtml:body>
+</xhtml:html>
+​

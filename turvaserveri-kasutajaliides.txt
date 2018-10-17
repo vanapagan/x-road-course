@@ -10,6 +10,15 @@ subsystemCode=DEVTRAINING_09_A
 serviceCode=CourseDetails
 version=v1
 
+https://10.224.28.220/misp2/
+kasutajanimi: FI09
+parool: 09
 
 WSDL faili saab siit:
 https://10.239.255.100/wsdl?xRoadInstance=ee-dev&memberClass=COM&memberCode=11333578&subsystemCode=DEVTRAINING_09_A&serviceCode=CourseDetails&version=v1
+
+
+https://10.224.28.220/misp2/admin/admin
+
+admin
+admin
