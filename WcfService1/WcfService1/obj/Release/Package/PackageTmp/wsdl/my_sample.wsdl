@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="trainings" 
+	xmlns:tns="http://trainings.ttu.ee"
+	targetNamespace="http://trainings.ttu.ee">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://trainings.ttu.ee">
+			<xsd:import namespace="http://x-road.eu/xsd/xroad.xsd"
+				schemaLocation="http://x-road.eu/xsd/xroad.xsd" />
+			<xsd:element name="CoursesList" type="tns:coursesListRequest"/>
+			<xsd:element name="CoursesListResponse" type="tns:coursesListResponse"/>
+			
+			<xsd:complexType name="coursesListRequest">
+				<xsd:all>
+					<xsd:element name="Name" type="xsd:string">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<xrd:title xml:lang="et">Kursuse nimi</xrd:title>
+								<xrd:title xml:lang="en">Course name</xrd:title>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Date" type="xsd:date">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<xrd:title xml:lang="et">Kursuse aeg</xrd:title>
+								<xrd:title xml:lang="en">Course date</xrd:title>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name="coursesListResponse">	
+				<xsd:sequence>
+					<xsd:element name="Courses">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="CourseShort" type="tns:CourseShort" minOccurs="0" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:element name="CourseDetails" type="tns:courseDetailsRequest"/>
+			<xsd:element name="CourseDetailsResponse" type="tns:courseDetailsResponse"/>
+			
+			<xsd:complexType name="courseDetailsRequest">
+				<xsd:sequence>
+					<xsd:element name="Id" type="xsd:int">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<xrd:title xml:lang="et">Kursuse unikaalne identifikaator</xrd:title>
+								<xrd:title xml:lang="en">Course unique identifier</xrd:title>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="courseDetailsResponse">
+				<xsd:sequence>
+					<xsd:element name="Course" type="tns:Course">
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+		
+			
+			<xsd:complexType name="Course">
+				<xsd:sequence>
+					<xsd:element name="Id" type="xsd:string">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<xrd:title xml:lang="et">Kood</xrd:title>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Name" type="xsd:string">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<xrd:title xml:lang="et">Nimi</xrd:title>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="location" type="xsd:string">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<xrd:title xml:lang="et">Asukoht</xrd:title>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="date" type="xsd:date">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<xrd:title xml:lang="et">Aeg</xrd:title>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="CourseShort">
+				<xsd:sequence>
+					<xsd:element name="Id" type="xsd:string">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<xrd:title xml:lang="et">Kood</xrd:title>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Name" type="xsd:string">
+						<xsd:annotation>
+							<xsd:appinfo>
+								<xrd:title xml:lang="et">Nimi</xrd:title>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="xrdheader">
+		<wsdl:part name="client" element="xrd:client" />
+		<wsdl:part name="service" element="xrd:service" />
+		<wsdl:part name="userId" element="xrd:userId" />
+		<wsdl:part name="id" element="xrd:id" />
+		<wsdl:part name="protocolVersion" element="xrd:protocolVersion" />
+	</wsdl:message>
+
+	<wsdl:message name="CoursesList">
+		<wsdl:part element="tns:CoursesList" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="CoursesListResponse">
+		<wsdl:part element="tns:CoursesListResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="CourseDetails">
+		<wsdl:part element="tns:CourseDetails" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="CourseDetailsResponse">
+		<wsdl:part element="tns:CourseDetailsResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:portType name="ITrainingsSchedule">
+		<wsdl:operation name="CoursesList">
+			<wsdl:documentation>
+				<xrd:title xml:lang="et">TTU kursuste nimekiri</xrd:title>
+				<xrd:title xml:lang="en">TTU Courses list</xrd:title>
+			</wsdl:documentation>
+			<wsdl:input message="tns:CoursesList" />
+			<wsdl:output message="tns:CoursesListResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="CourseDetails">
+			<wsdl:documentation>
+				<xrd:title xml:lang="et">Kursuse detailinfo</xrd:title>
+				<xrd:title xml:lang="en">Course details</xrd:title>
+			</wsdl:documentation>
+			<wsdl:input message="tns:CourseDetails" />
+			<wsdl:output message="tns:CourseDetailsResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="TrainingsScheduleBinding" type="tns:ITrainingsSchedule">
+		<soap:binding style="document" 
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="CoursesList">
+			<soap:operation soapAction="http://trainings.ttu.ee/CoursesList" />
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:body use="literal" />
+				<soap:header message="tns:xrdheader" part="client" use="literal" />
+				<soap:header message="tns:xrdheader" part="service" use="literal" />
+				<soap:header message="tns:xrdheader" part="userId" use="literal" />
+				<soap:header message="tns:xrdheader" part="id" use="literal" />
+				<soap:header message="tns:xrdheader" part="protocolVersion"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+				<soap:header message="tns:xrdheader" part="client" use="literal" />
+				<soap:header message="tns:xrdheader" part="service" use="literal" />
+				<soap:header message="tns:xrdheader" part="userId" use="literal" />
+				<soap:header message="tns:xrdheader" part="id" use="literal" />
+				<soap:header message="tns:xrdheader" part="protocolVersion"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="CourseDetails">
+			<soap:operation soapAction="http://trainings.ttu.ee/CourseDetails" />
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:body use="literal" />
+				<soap:header message="tns:xrdheader" part="client" use="literal" />
+				<soap:header message="tns:xrdheader" part="service" use="literal" />
+				<soap:header message="tns:xrdheader" part="userId" use="literal" />
+				<soap:header message="tns:xrdheader" part="id" use="literal" />
+				<soap:header message="tns:xrdheader" part="protocolVersion"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+				<soap:header message="tns:xrdheader" part="client" use="literal" />
+				<soap:header message="tns:xrdheader" part="service" use="literal" />
+				<soap:header message="tns:xrdheader" part="userId" use="literal" />
+				<soap:header message="tns:xrdheader" part="id" use="literal" />
+				<soap:header message="tns:xrdheader" part="protocolVersion"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="TrainingsSchedule">
+		<wsdl:port binding="tns:TrainingsScheduleBinding" name="TrainingsScheduleSOAP">
+			<soap:address location="*" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

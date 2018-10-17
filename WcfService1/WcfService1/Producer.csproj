@@ -81,6 +81,7 @@
     <Content Include="Connected Services\CoursesSvc\WcfService1.CoursesSvc.XRoadServiceIdentifierType.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connected Services\CoursesSvc\Reference.cs">
