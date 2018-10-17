@@ -2,3 +2,14 @@ https://10.239.255.100:4000/login
 
 kastuajanimi: xtee
 parool: xtee123
+
+MemberCode:
+11333578
+
+subsystemCode=DEVTRAINING_09_A
+serviceCode=CourseDetails
+version=v1
+
+
+WSDL faili saab siit:
+https://10.239.255.100/wsdl?xRoadInstance=ee-dev&memberClass=COM&memberCode=11333578&subsystemCode=DEVTRAINING_09_A&serviceCode=CourseDetails&version=v1
