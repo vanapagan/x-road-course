@@ -218,9 +218,11 @@
                                     id="CoursesList_output_tns_CoursesListResponse_Courses_CourseShort">
                         <xforms:output ref="Id">
                            <xforms:label xml:lang="et">Kood</xforms:label>
+                           <xforms:label xml:lang="et">Code</xforms:label>
                         </xforms:output>
                         <xforms:output ref="Name">
                            <xforms:label xml:lang="et">Nimi</xforms:label>
+                           <xforms:label xml:lang="et">Name</xforms:label>
                         </xforms:output>
 
                         <xforms:trigger appearance="minimal">
